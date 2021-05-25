@@ -1,3 +1,27 @@
 .App {
+  display: flex;
   text-align: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.result-card {
+  width: 20vw;
+  border: 1px solid rgb(223, 223, 223);
+  border-radius: 20px;
+  margin: 1em;
+  cursor: pointer;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 1px 1px 1px 1px rgb(187, 187, 187);
+  align-items: center;
+}
+
+.search-results {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
