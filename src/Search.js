@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
-import { unstable_renderSubtreeIntoContainer } from "react-dom/cjs/react-dom.development";
+import { useState } from "react";
 import SearchResult from "./SearchResult";
 
 const githubURL = "https://api.github.com/search/repositories?";
 
-export default function Search({ searchView, setSearchView, setDisplayRepo }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+export default function Search({
+  searchView,
+  setSearchView,
+  setDisplayRepo,
+  searchTerm,
+  setSearchTerm,
+  languageOptions,
+  setLanguageOptions,
+  searchResults,
+  setSearchResults,
+}) {
   const [sortValue, setSortValue] = useState("best match");
   const [filterValue, setFilterValue] = useState("");
 
@@ -14,65 +21,94 @@ export default function Search({ searchView, setSearchView, setDisplayRepo }) {
     if (searchTerm === "") {
       return;
     } else {
-      fetch(`${githubURL}q=${searchTerm}&sort=${sortValue}&order=desc`)
+      try {
+        fetch(`${githubURL}q=${searchTerm}&sort=${sortValue}&order=desc`)
+          .then((response) => response.json())
+          .then((data) => {
+            setSearchResults(data.items);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const filterSearchQuery = () => {
+    try {
+      fetch(
+        `${githubURL}q=${searchTerm}+language:${filterValue}&sort=${sortValue}&order=desc`
+      )
         .then((response) => response.json())
         .then((data) => {
           setSearchResults(data.items);
         });
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  const updateSearchQuery = () => {
-    fetch(
-      `${githubURL}q=${searchTerm}+language:${filterValue}&sort=${sortValue}&order=desc`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setSearchResults(data.items);
-      });
   };
 
   return (
     <div>
       <div className="top-of-page">
         <div className="search-and-filter">
-          <div className="space"></div>
           <div className="search-section">
-            <label>search: </label>
+            <label htmlor="search-field">Search: </label>
             <input
+              id="search-field"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             ></input>
-            <label>Sort by: </label>
+            <label className="sort-by-label">Sort by:</label>
             <select
-              onChange={(e) => setSortValue(e.target.value)}
+              className="sort-by-dropdown"
+              id="sort-by"
+              onChange={(e) => {
+                setSortValue(e.target.value);
+              }}
               type="menu"
               defaultValue="Best Match"
             >
               <option value="best match">Best Match (default)</option>
               <option value="stars">Stars</option>
             </select>
-            <button type="submit" onClick={searchQuery}>
-              submit
-            </button>
+            {searchResults.length > 0 ? null : (
+              <button
+                className="search-button"
+                type="submit"
+                onClick={searchQuery}
+              >
+                Search
+              </button>
+            )}
           </div>
-          <div className="space"></div>
-          {searchResults.length > 0 ? (
+          {searchView === true && searchResults.length > 0 ? (
             <div className="filer-section">
-              <label>Filter:</label>
+              <label className="filter-label">Filter:</label>
               <select
+                id="filter-dropdown"
+                className="filter-dropdown"
                 onChange={(e) => setFilterValue(e.target.value)}
                 type="menu"
                 defaultValue="Select a Language to Sort By"
               >
                 <option value="Language">Select a Language to Filter by</option>
-                {searchResults.map((opt, i) => {
-                  return <option key={`option ${i}`}>{opt.language}</option>;
+                {languageOptions.map((opt, i) => {
+                  return <option key={`option ${i}`}>{opt}</option>;
                 })}
               </select>
-              <button type="submit" onClick={updateSearchQuery}>
-                Update Search
+              <button
+                className="search-button"
+                type="submit"
+                onClick={filterSearchQuery}
+              >
+                Search with filter
+              </button>
+              <button
+                className="clear-search-button"
+                onClick={() => setSearchResults([])}
+              >
+                Clear Search
               </button>
             </div>
           ) : null}

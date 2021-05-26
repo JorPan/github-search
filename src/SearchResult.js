@@ -16,10 +16,9 @@ export default function SearchResult({
         }}
       >
         <p>{index + 1}</p>
-        <p>Name: {result.name}</p>
-        <p>User: {result.owner.login}</p>
-        <p>Language: {result.language}</p>
-        <p>Stars: {result.stargazers_count}</p>
+        <p>{result.name}</p>
+        <p>{result.language}</p>
+        <p>{result.stargazers_count} stars</p>
       </div>
     </div>
   );
