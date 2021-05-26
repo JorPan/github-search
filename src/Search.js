@@ -17,6 +17,7 @@ export default function Search({
   const [sortValue, setSortValue] = useState("best match");
   const [filterValue, setFilterValue] = useState("");
 
+  // Pulls data from the GitHub API using the user input search term //
   const searchQuery = () => {
     if (searchTerm === "") {
       return;
@@ -33,17 +34,22 @@ export default function Search({
     }
   };
 
+  // Allows for filtering by language
   const filterSearchQuery = () => {
-    try {
-      fetch(
-        `${githubURL}q=${searchTerm}+language:${filterValue}&sort=${sortValue}&order=desc`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setSearchResults(data.items);
-        });
-    } catch (error) {
-      console.log(error);
+    if (searchTerm === "") {
+      return;
+    } else {
+      try {
+        fetch(
+          `${githubURL}q=${searchTerm}+language:${filterValue}&sort=${sortValue}&order=desc`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            setSearchResults(data.items);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -106,7 +112,10 @@ export default function Search({
               </button>
               <button
                 className="clear-search-button"
-                onClick={() => setSearchResults([])}
+                onClick={() => {
+                  setSearchResults([]);
+                  setSearchTerm("");
+                }}
               >
                 Clear Search
               </button>
