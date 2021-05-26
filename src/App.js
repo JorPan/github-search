@@ -27,7 +27,7 @@ function App() {
     "TypeScript",
     "Go",
   ]);
-
+  // Renders the application, and shows either the search section or the display page of a result once clicked. //
   return (
     <div className="App">
       <div className="logo-section">

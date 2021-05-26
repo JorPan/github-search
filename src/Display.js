@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Display({ displayRepo }) {
+  // Renders a display page with more information for a repo once it is clicked on. //
   return (
     <div className="repo-display-page">
       {displayRepo ? (

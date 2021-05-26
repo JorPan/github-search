@@ -17,7 +17,7 @@ export default function Search({
   const [sortValue, setSortValue] = useState("best match");
   const [filterValue, setFilterValue] = useState("");
 
-  // Pulls data from the GitHub API using the user input search term //
+  // Pulls data from the GitHub API using the user input search term. //
   const searchQuery = () => {
     if (searchTerm === "") {
       return;
@@ -34,7 +34,7 @@ export default function Search({
     }
   };
 
-  // Allows for filtering by language
+  // Allows for filtering by language once search results are loaded. //
   const filterSearchQuery = () => {
     if (searchTerm === "") {
       return;
@@ -52,7 +52,7 @@ export default function Search({
       }
     }
   };
-
+  // Renders the search section including the search bar and the sorting dropdown. //
   return (
     <div>
       <div className="top-of-page">
@@ -88,6 +88,9 @@ export default function Search({
               </button>
             )}
           </div>
+          {
+            // Renders language filter and clear search button once search results are loaded.
+          }
           {searchView === true && searchResults.length > 0 ? (
             <div className="filer-section">
               <label className="filter-label">Filter:</label>
@@ -123,7 +126,9 @@ export default function Search({
           ) : null}
         </div>
       </div>
-
+      {
+        // Renders search results //
+      }
       {searchView === true && searchResults.length === 0 ? null : (
         <div className="search-results">
           {searchResults.map((result, i) => (

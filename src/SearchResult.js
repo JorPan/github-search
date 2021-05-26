@@ -6,6 +6,7 @@ export default function SearchResult({
   setSearchView,
   setDisplayRepo,
 }) {
+  // Renders a card with general information about each repo that shows up as a search result. //
   return (
     <div key={index}>
       <div
